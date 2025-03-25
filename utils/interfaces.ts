@@ -25,6 +25,7 @@ export interface ToastManagerProps {
   showCloseIcon: boolean;
   showProgressBar: boolean;
   isRTL: boolean;
+  colors?: Partial<ToastManagerColors>,
 }
 
 export interface ToastManagerState {
@@ -44,4 +45,22 @@ export interface ToastManagerState {
       animationOut: string;
     }
   >;
+}
+
+export interface ToastManagerColors {
+  light: {
+    text: string;
+    back: string;
+  };
+  dark: {
+    text: string;
+    back: string;
+  };
+  default: string;
+  info: string;
+  success: string;
+  warn: string;
+  error: string;
+  textDefault: string;
+  textDark: string;
 }

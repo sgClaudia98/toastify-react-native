@@ -1,4 +1,6 @@
-export const Colors: any = {
+import { ToastManagerColors } from "../utils/interfaces";
+
+export const Colors: ToastManagerColors = {
   light: {
     text: "#4c4c4c",
     back: "#ffffff",

@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Modal from "react-native-modal";
 
 
-import { ToastManagerProps, ToastManagerState } from "../utils/interfaces";
+import { ToastManagerProps, ToastManagerState, ToastManagerColors } from "../utils/interfaces";
 import defaultProps from "../utils/defaultProps";
 import { Colors } from "../config/theme";
 import { SCALE } from "../utils/helpers";
@@ -16,11 +16,16 @@ class ToastManager extends Component<ToastManagerProps, ToastManagerState> {
   private timer: NodeJS.Timeout;
   private isShow: boolean;
   private isPaused: boolean = false;
+  private static ThemeColors: ToastManagerColors = Colors;
   static defaultProps = defaultProps;
   static __singletonRef: ToastManager | null;
 
   constructor(props: ToastManagerProps) {
     super(props);
+    // Override ThemeColors if props.colors is provided
+    if (props.colors) {
+      ToastManager.ThemeColors = {...Colors, ...props.colors};
+    }
     ToastManager.__singletonRef = this;
     this.timer = setTimeout(() => { }, 0); // Initialize timer with a dummy value
     this.isShow = false;
@@ -31,7 +36,7 @@ class ToastManager extends Component<ToastManagerProps, ToastManagerState> {
     text: "",
     opacityValue: new Animated.Value(1),
     barWidth: new Animated.Value(SCALE(204.8)),
-    barColor: Colors.default,
+    barColor: ToastManager.ThemeColors.default,
     icon: "checkmark-circle",
     position: this.props.position,
     animationStyle: {
@@ -59,22 +64,22 @@ class ToastManager extends Component<ToastManagerProps, ToastManagerState> {
   };
 
   static info = (text: string, position?: ToastManagerProps["position"]) => {
-    ToastManager.__singletonRef?.show(text, Colors.info, "information-circle", position);
+    ToastManager.__singletonRef?.show(text, ToastManager.ThemeColors.info, "information-circle", position);
   };
 
   static success = (text: string, position?: ToastManagerProps["position"]) => {
-    ToastManager.__singletonRef?.show(text, Colors.success, "checkmark-circle", position);
+    ToastManager.__singletonRef?.show(text, ToastManager.ThemeColors.success, "checkmark-circle", position);
   };
 
   static warn = (text: string, position?: ToastManagerProps["position"]) => {
-    ToastManager.__singletonRef?.show(text, Colors.warn, "warning", position);
+    ToastManager.__singletonRef?.show(text, ToastManager.ThemeColors.warn, "warning", position);
   };
 
   static error = (text: string, position?: ToastManagerProps["position"]) => {
-    ToastManager.__singletonRef?.show(text, Colors.error, "alert-circle", position);
+    ToastManager.__singletonRef?.show(text, ToastManager.ThemeColors.error, "alert-circle", position);
   };
 
-  show = (text = "", barColor = Colors.default, icon: string, position?: ToastManagerProps["position"]) => {
+  show = (text = "", barColor = ToastManager.ThemeColors.default, icon: string, position?: ToastManagerProps["position"]) => {
     const { duration, isRTL } = this.props;
 
     // Reset pause state
